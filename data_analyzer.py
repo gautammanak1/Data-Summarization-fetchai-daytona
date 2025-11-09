@@ -642,7 +642,6 @@ def create_flask_app(analysis: Dict[str, Any], charts_base64: List[Dict[str, str
                 <h1>Data Analysis Report</h1>
                 <p>AI-Powered Data Summarization Assistant</p>
             </div>
-            </div>
         </div>
         
         <div class="data-source">
