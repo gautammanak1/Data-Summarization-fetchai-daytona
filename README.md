@@ -279,22 +279,46 @@ The preview URL opens a beautiful web report with:
 - **Local Files**: Use absolute file paths for local CSV/JSON files
 - **Raw Data**: You can paste CSV/JSON data directly in the chat message
 
-## Example URLs
+## 📋 Example Inputs
 
-### Google Sheets
+### Google Sheets URL
 ```
-https://docs.google.com/spreadsheets/d/1BxiMVs0XRA5nFMdKvBdBZjgmUUqptlbs74OgvE2upms/edit
+https://docs.google.com/spreadsheets/d/YOUR_SHEET_ID/edit
 ```
 
-### CSV File
+### CSV File URL
 ```
 https://raw.githubusercontent.com/datasets/covid-19/main/data/time-series-19-covid-combined.csv
 ```
 
-### JSON File
+### JSON File URL
 ```
 https://api.github.com/repos/octocat/Hello-World/issues
 ```
+
+### Raw CSV Data (via Chat)
+```
+Product,Sales,Revenue
+Laptop,1500,225000
+Phone,2000,300000
+Tablet,800,120000
+```
+
+### Raw JSON Data (via Chat)
+```
+[
+  {"name": "Product A", "sales": 100, "revenue": 10000},
+  {"name": "Product B", "sales": 200, "revenue": 20000}
+]
+```
+
+### Local File Path
+```
+/Users/username/data/sample_data.csv
+```
+
+### Sample Data File
+The repository includes `sample_data.csv` with sales data that you can use for testing.
 
 ## Troubleshooting
 
