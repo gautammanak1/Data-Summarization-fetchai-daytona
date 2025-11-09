@@ -205,47 +205,70 @@ The assistant performs comprehensive data analysis:
 
 ## 📊 Example Output
 
-### Input Data (CSV)
+### Input Data Example (CSV)
 ```csv
 Product,Category,Sales,Revenue,Units_Sold,Region,Quarter
 Laptop,Electronics,1500,225000,150,North,Q1
 Smartphone,Electronics,2000,300000,200,North,Q1
 Tablet,Electronics,800,120000,80,North,Q1
+Headphones,Electronics,1200,96000,300,North,Q1
 ```
 
-### Generated Report Includes:
-1. **Data Overview**: Total rows, columns, data types
-2. **Summary Statistics**: Mean, median, std dev, min, max for numeric columns
-3. **Missing Values Analysis**: Identification of incomplete data
-4. **Key Insights**: Statistical analysis and patterns
-5. **Visualizations**:
-   - Histograms for numeric columns
-   - Bar charts for categorical columns
-   - Correlation heatmaps for numeric relationships
+### Generated Report Output
+
+#### 1. Data Overview Section
+```
+📊 Data Overview
+Total Rows: 42
+Total Columns: 7
+Columns: Product, Category, Sales, Revenue, Units_Sold, Region, Quarter
+```
+
+#### 2. Summary Statistics Table
+| Column | Mean | Median | Std Dev | Min | Max |
+|--------|------|--------|---------|-----|-----|
+| Sales | 1,450.50 | 1,500.00 | 450.25 | 500.00 | 2,700.00 |
+| Revenue | 217,575.00 | 225,000.00 | 67,537.50 | 75,000.00 | 405,000.00 |
+| Units_Sold | 145.05 | 150.00 | 45.03 | 50.00 | 270.00 |
+
+#### 3. Key Insights
+- **Sales**: Mean = 1,450.50, Median = 1,500.00, Range = 500.00 to 2,700.00
+- **Revenue**: Mean = 217,575.00, Median = 225,000.00, Range = 75,000.00 to 405,000.00
+- **Region**: 4 unique values. Most common: North
+- **Quarter**: 2 unique values. Most common: Q1
+- **Dataset**: 42 rows × 7 columns. Missing data: 0.00%
+
+#### 4. Visualizations Generated
+- Histogram: Distribution of Sales
+- Histogram: Distribution of Revenue
+- Histogram: Distribution of Units_Sold
+- Bar Chart: Top Values in Region
+- Bar Chart: Top Values in Category
+- Bar Chart: Top Values in Quarter
+- Correlation Heatmap: Sales, Revenue, Units_Sold relationships
 
 ### Preview URL Output
-After processing, you'll receive a preview URL like:
+After processing, you'll receive a preview URL:
 ```
-https://3000-xxxxx-xxxxx-xxxxx.proxy.daytona.works
+✅ Data analysis complete!
+
+📊 Preview URL: https://3000-xxxxx-xxxxx-xxxxx.proxy.daytona.works
+
+The analysis includes:
+- Summary statistics
+- Key insights
+- Standard visualizations (histograms, bar charts, correlation heatmaps)
+
+Open the URL to view the full report.
 ```
 
-This URL opens a beautiful web report with:
-- Modern gradient design
-- Interactive charts and visualizations
-- Comprehensive data analysis
-- Downloadable insights
-
-## 📸 Sample Output Screenshot
-
-The web report displays:
-- **Header**: Data Analysis Report title
-- **Data Source**: Link to original data
-- **Data Overview**: Dataset dimensions and structure
-- **Summary Statistics Table**: Statistical metrics for numeric columns
-- **Missing Values**: Identification of gaps in data
-- **Key Insights**: Automated insights and patterns
-- **Visualizations**: Multiple charts and graphs
-- **Footer**: Powered by Daytona & Fetch.ai
+### Web Report Features
+The preview URL opens a beautiful web report with:
+- **Modern Gradient Design**: Purple gradient background with white cards
+- **Interactive Charts**: Hover effects and responsive design
+- **Comprehensive Analysis**: Complete statistical breakdown
+- **Mobile Responsive**: Works on all screen sizes
+- **Professional Layout**: Clean, organized, and easy to read
 
 ## Usage Tips
 
