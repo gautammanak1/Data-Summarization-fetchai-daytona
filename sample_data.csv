@@ -1,0 +1,44 @@
+Product,Category,Sales,Revenue,Units_Sold,Region,Quarter
+Laptop,Electronics,1500,225000,150,North,Q1
+Smartphone,Electronics,2000,300000,200,North,Q1
+Tablet,Electronics,800,120000,80,North,Q1
+Headphones,Electronics,1200,96000,300,North,Q1
+Mouse,Electronics,500,25000,500,North,Q1
+Laptop,Electronics,1800,270000,180,South,Q1
+Smartphone,Electronics,2200,330000,220,South,Q1
+Tablet,Electronics,900,135000,90,South,Q1
+Headphones,Electronics,1100,88000,275,South,Q1
+Mouse,Electronics,600,30000,600,South,Q1
+Laptop,Electronics,1600,240000,160,East,Q1
+Smartphone,Electronics,1900,285000,190,East,Q1
+Tablet,Electronics,750,112500,75,East,Q1
+Headphones,Electronics,1300,104000,325,East,Q1
+Mouse,Electronics,550,27500,550,East,Q1
+Laptop,Electronics,1700,255000,170,West,Q1
+Smartphone,Electronics,2100,315000,210,West,Q1
+Tablet,Electronics,850,127500,85,West,Q1
+Headphones,Electronics,1150,92000,287,West,Q1
+Mouse,Electronics,580,29000,580,West,Q1
+Laptop,Electronics,2000,300000,200,North,Q2
+Smartphone,Electronics,2500,375000,250,North,Q2
+Tablet,Electronics,1000,150000,100,North,Q2
+Headphones,Electronics,1400,112000,350,North,Q2
+Mouse,Electronics,650,32500,650,North,Q2
+Laptop,Electronics,2200,330000,220,South,Q2
+Smartphone,Electronics,2700,405000,270,South,Q2
+Tablet,Electronics,1100,165000,110,South,Q2
+Headphones,Electronics,1300,104000,325,South,Q2
+Mouse,Electronics,700,35000,700,South,Q2
+Desk Chair,Furniture,800,160000,80,North,Q1
+Office Desk,Furniture,600,180000,60,North,Q1
+Bookshelf,Furniture,400,80000,40,North,Q1
+Desk Chair,Furniture,900,180000,90,South,Q1
+Office Desk,Furniture,650,195000,65,South,Q1
+Bookshelf,Furniture,450,90000,45,South,Q1
+Desk Chair,Furniture,750,150000,75,East,Q1
+Office Desk,Furniture,550,165000,55,East,Q1
+Bookshelf,Furniture,380,76000,38,East,Q1
+Desk Chair,Furniture,850,170000,85,West,Q1
+Office Desk,Furniture,620,186000,62,West,Q1
+Bookshelf,Furniture,420,84000,42,West,Q1
+

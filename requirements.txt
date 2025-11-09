@@ -1,0 +1,11 @@
+requests
+python-dotenv
+flask
+daytona
+uagents
+uagents-core
+pandas
+matplotlib
+seaborn
+numpy
+
