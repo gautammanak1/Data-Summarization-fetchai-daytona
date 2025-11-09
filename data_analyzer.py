@@ -403,6 +403,51 @@ class DataAnalyzer:
         
         return report
 
+    def build_text_summary(self, analysis: Dict[str, Any]) -> str:
+        """Build a concise plain-text summary from analysis"""
+        lines = []
+        lines.append("Dataset summary:")
+        lines.append(f"- Rows: {analysis['shape'][0]:,}")
+        lines.append(f"- Columns: {analysis['shape'][1]}")
+        if analysis.get('summary_stats'):
+            num_cols = list(analysis['summary_stats'].keys())[:3]
+            if num_cols:
+                lines.append("- Numeric columns (sample): " + ", ".join(num_cols))
+        missing = sum(analysis.get('missing_values', {}).values())
+        if analysis['shape'][0] > 0 and analysis['shape'][1] > 0:
+            total_cells = analysis['shape'][0] * analysis['shape'][1]
+            miss_pct = (missing / total_cells) * 100 if total_cells else 0
+            lines.append(f"- Missing cells: {missing} ({miss_pct:.2f}%)")
+        # Key insights
+        numeric_highlights = [i for i in analysis['insights'] if i.get('type') == 'numeric'][:3]
+        categorical_highlights = [i for i in analysis['insights'] if i.get('type') == 'categorical'][:2]
+        if numeric_highlights or categorical_highlights:
+            lines.append("Key insights:")
+        for i in numeric_highlights:
+            lines.append(f"- {i['column']}: mean {i['mean']:.2f}, median {i['median']:.2f}, range {i['min']:.2f}-{i['max']:.2f}")
+        for i in categorical_highlights:
+            lines.append(f"- {i['column']}: {i['unique_values']} unique; most common: {i['most_common']}")
+        return "\n".join(lines)
+
+def get_asi_llm_summary(api_key: str, content: str) -> str:
+    """Optional: Use ASI LLM to refine/shorten the summary text"""
+    try:
+        import requests
+        headers = {"Content-Type": "application/json", "Authorization": f"Bearer {api_key}"}
+        payload = {
+            "model": "asi1-mini",
+            "messages": [
+                {"role": "system", "content": "You are a data analyst. Summarize data insights clearly and concisely (5-8 bullet points)."},
+                {"role": "user", "content": f"Summarize these dataset insights:\n\n{content}"}
+            ]
+        }
+        r = requests.post("https://api.asi1.ai/v1/chat/completions", json=payload, headers=headers, timeout=30)
+        if r.status_code == 200:
+            j = r.json()
+            return j.get("choices", [{}])[0].get("message", {}).get("content", "") or content
+        return content
+    except Exception:
+        return content
 
 def create_flask_app(analysis: Dict[str, Any], charts_base64: List[Dict[str, str]], data_url: str) -> str:
     """Create Flask web app code with analysis results and charts"""
@@ -691,7 +736,7 @@ if __name__ == '__main__':
     return flask_code
 
 
-def run_data_analysis_sandbox(data_url: str) -> Tuple[Any, Optional[str]]:
+def run_data_analysis_sandbox(data_url: str) -> Tuple[Any, Optional[str], Optional[str]]:
     """Run data analysis in Daytona sandbox with web preview
     
     Args:
@@ -705,7 +750,7 @@ def run_data_analysis_sandbox(data_url: str) -> Tuple[Any, Optional[str]]:
     daytona_api_key = os.getenv('DAYTONA_API_KEY')
     if not daytona_api_key:
         print("Error: DAYTONA_API_KEY environment variable not set")
-        return None, None
+        return None, None, None
     
     daytona = Daytona(DaytonaConfig(api_key=daytona_api_key))
     
@@ -723,7 +768,7 @@ def run_data_analysis_sandbox(data_url: str) -> Tuple[Any, Optional[str]]:
         if df is None or df.empty:
             print("Error: Could not load or data is empty")
             sandbox.delete()
-            return None, None
+            return None, None, None
         
         print(f"Data loaded successfully! Shape: {df.shape}")
         
@@ -731,6 +776,7 @@ def run_data_analysis_sandbox(data_url: str) -> Tuple[Any, Optional[str]]:
         print("Analyzing data...")
         analysis = analyzer.analyze_data(df)
         print("Analysis complete!")
+        text_summary = analyzer.build_text_summary(analysis)
         
         # Generate charts
         print("Generating visualizations...")
@@ -821,14 +867,14 @@ def run_data_analysis_sandbox(data_url: str) -> Tuple[Any, Optional[str]]:
         if not ready:
             print("Note: App is starting up; if you see 502, wait a few seconds and refresh.")
         
-        return sandbox, url
+        return sandbox, url, text_summary
     
     except Exception as e:
         print(f"Error during analysis: {str(e)}")
         import traceback
         traceback.print_exc()
         sandbox.delete()
-        return None, None
+        return None, None, None
 
 
 def main():
@@ -839,7 +885,7 @@ def main():
     data_url = input("Enter data URL (CSV or JSON, Google Sheets supported): ").strip()
     
     if data_url:
-        sandbox, preview_url = run_data_analysis_sandbox(data_url)
+        sandbox, preview_url, text_summary = run_data_analysis_sandbox(data_url)
         if sandbox:
             print("\nSandbox is running. Press Ctrl+C to stop and clean up.")
             try:

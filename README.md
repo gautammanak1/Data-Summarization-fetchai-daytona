@@ -60,6 +60,8 @@ Create a `.env` file in the project root with:
 
 ```ini
 DAYTONA_API_KEY=your_daytona_api_key
+# Optional: enable LLM summary in agent replies
+ASI_API_KEY=your_asi_api_key
 ```
 
 ## Install Dependencies
@@ -76,22 +78,7 @@ If `uagents-core` is unavailable on your index, try:
 pip install uagents
 ```
 
-## Run Modes
-
-### A) Run the CLI flow (no agents)
-
-This launches the Daytona sandbox and returns a live preview URL after you enter a data URL.
-
-```bash
-python3 data_analyzer.py
-# Example prompt when asked:
-#   https://docs.google.com/spreadsheets/d/YOUR_SHEET_ID/edit
-#   or
-#   https://example.com/data.csv
-#   or use the sample file: sample_data.csv (local file path)
-```
-
-### B) Run the uAgents chat agent
+## Run
 
 This exposes the same capability behind a uAgents chat interface.
 
@@ -99,7 +86,8 @@ This exposes the same capability behind a uAgents chat interface.
 python3 agent.py
 ```
 
-- The agent starts on port `8000` with a mailbox enabled. Send a `ChatMessage` containing your data file URL from another uAgent or an integration that speaks the uAgents chat protocol.
+- The agent starts on port `8000` with a mailbox enabled. Send a `ChatMessage` containing your data file URL or raw CSV/JSON from another uAgent or an integration that speaks the uAgents chat protocol.
+- If `ASI_API_KEY` is set, the agent will include an LLM-generated summary along with the preview URL.
 
 ## Supported Data Sources
 
@@ -170,7 +158,7 @@ sequenceDiagram
   Runner->>Daytona: create()
   Runner->>DataSource: GET data file
   DataSource-->>Runner: data (CSV/JSON)
-  Runner->>Runner: download_data(url)
+  Runner->>Runner: load_data(input)
   Runner->>Runner: analyze_data(df)
   Runner->>Runner: generate_charts(df)
   Runner->>Runner: create_flask_app(analysis, charts)

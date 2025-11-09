@@ -2,6 +2,9 @@ import asyncio
 from datetime import datetime
 from uuid import uuid4
 
+import os
+from data_analyzer import run_data_analysis_sandbox, get_asi_llm_summary
+
 from uagents import Agent, Context, Protocol
 from uagents_core.contrib.protocols.chat import (
     ChatMessage,
@@ -9,8 +12,6 @@ from uagents_core.contrib.protocols.chat import (
     TextContent,
     chat_protocol_spec,
 )
-
-from data_analyzer import run_data_analysis_sandbox
 
 agent = Agent(
     name="data-summarization-agent",
@@ -66,10 +67,25 @@ async def handle_message(ctx: Context, sender: str, msg: ChatMessage):
             data_input
         )
         
-        sandbox, url = sandbox_result if isinstance(sandbox_result, tuple) else (None, None)
+        # Unpack tuple (sandbox, url, text_summary)
+        sandbox, url, text_summary = (sandbox_result + (None,))[:3] if isinstance(sandbox_result, tuple) else (None, None, None)
+
+        # Optional: refine summary using ASI LLM if key provided
+        refined_summary = None
+        if text_summary:
+            asi_key = os.getenv('ASI_API_KEY')
+            if asi_key:
+                refined_summary = get_asi_llm_summary(asi_key, text_summary)
 
         if url:
-            reply = f"✅ Data analysis complete!\n\n📊 Preview URL: {url}\n\nThe analysis includes:\n- Summary statistics\n- Key insights\n- Standard visualizations (histograms, bar charts, correlation heatmaps)\n\nOpen the URL to view the full report."
+            summary_block = f"\n\n📝 Summary (LLM):\n{refined_summary}" if refined_summary else (f"\n\n📝 Summary:\n{text_summary}" if text_summary else "")
+            reply = (
+                f"✅ Data analysis complete!\n\n"
+                f"📊 Preview URL: {url}"
+                f"\n\nThe analysis includes:\n- Summary statistics\n- Key insights\n- Standard visualizations (histograms, bar charts, correlation heatmaps)"
+                f"{summary_block}"
+                f"\n\nOpen the URL to view the full report."
+            )
         else:
             reply = f"❌ Error: Could not analyze the data. Please check:\n- The data format is correct (CSV or JSON)\n- If using URL, it is accessible\n- If using Google Sheets, it is publicly accessible or shared with view permissions\n- The data is not empty"
     except Exception as e:
